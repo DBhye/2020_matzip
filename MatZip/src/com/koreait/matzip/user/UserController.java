@@ -14,4 +14,10 @@ public class UserController {
 		request.setAttribute(Const.VIEW, "user/login");
 		return ViewRef.TEMP_DEFAULT;
 	}
+	
+	public String join(HttpServletRequest request) {
+		request.setAttribute(Const.TITLE, "회원가입");
+		request.setAttribute(Const.VIEW, "user/join");
+		return ViewRef.TEMP_DEFAULT;
+	}
 }
