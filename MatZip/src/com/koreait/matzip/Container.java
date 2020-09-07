@@ -11,24 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 public class Container extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
+	private HandlerMapper mapper;
+	
+	public Container() {
+		mapper = new HandlerMapper();
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("uri : " + request.getRequestURI());
-		String[] uriArr = request.getRequestURI().split("/");
-		
-		for(int i=0; i<uriArr.length; i++) {
-			System.out.println("uriArr[" + i + "] : " + uriArr[i]);	
-		}
-		
-		//response.sendRedirect(request.getRequestURI());
-		if(uriArr.length > 1) {
-			request.getRequestDispatcher(request.getRequestURI()).forward(request, response);
-		}
-		
+		proc(request, response);
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		proc(request, response);
+	}
 	
+	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String temp = mapper.nav(request);
+		request.getRequestDispatcher(temp).forward(request, response);
 	}
 
 }
