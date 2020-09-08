@@ -14,11 +14,42 @@ public class UserController {
 	}
 	
 	//     /user/login
-	public String login(HttpServletRequest request) {
+	public String login(HttpServletRequest request) {	
+		String error = request.getParameter("error");
+		
+		if(error != null) {
+			switch(error) {
+			case "2":
+				request.setAttribute("msg", "아이디를 확인해 주세요.");
+				break;
+			case "3":
+				request.setAttribute("msg", "비밀번호를 확인해 주세요.");
+				break;
+			}
+		}
+		
 		request.setAttribute(Const.TITLE, "로그인");
 		request.setAttribute(Const.VIEW, "user/login");
 		return ViewRef.TEMP_DEFAULT;
 	}
+	
+	public String loginProc(HttpServletRequest request) {
+		String user_id = request.getParameter("user_id");
+		String user_pw = request.getParameter("user_pw");
+		
+		UserVO param = new UserVO();
+		param.setUser_id(user_id);
+		param.setUser_pw(user_pw);
+		
+		int result = service.login(param);
+		
+		if(result == 1) {
+			return "redirect:/restaurant/restMap";
+		} else { 
+			return "redirect:/user/login?user_id=" + user_id + "&error=" + result;
+		}
+	}
+	
 	
 	public String join(HttpServletRequest request) {
 		request.setAttribute(Const.TITLE, "회원가입");

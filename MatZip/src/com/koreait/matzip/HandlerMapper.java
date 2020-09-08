@@ -23,6 +23,8 @@ public class HandlerMapper {
 			switch(uriArr[2]) {
 			case "login":
 				return userCon.login(request);
+			case "loginProc":
+				return userCon.loginProc(request);
 			case "join":
 				return userCon.join(request);
 			case "joinProc":

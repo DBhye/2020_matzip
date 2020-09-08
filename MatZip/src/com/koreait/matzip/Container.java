@@ -27,9 +27,13 @@ public class Container extends HttpServlet {
 	}
 	
 	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String temp = mapper.nav(request);
-		
-		if(temp.indexOf("/") >= 0 && "redirect:".equals(temp.substring(temp.indexOf("/")))) {			
+		String temp = mapper.nav(request); //보통 템플릿 파일명
+				
+
+		if(temp.indexOf("/") >= 0 && "redirect:".equals(temp.substring(0, temp.indexOf("/")))) {
+			
+			System.out.println("sub : " + temp.substring(0, temp.indexOf("/")));
+			
 			response.sendRedirect(temp.substring(temp.indexOf("/")));
 			return;
 		}
