@@ -80,7 +80,7 @@ public class UserController {
 		
 		int result = service.login(param);
 		
-		return String.format("ajax:/{\"result\": %s}", result);
+		return String.format("ajax:{\"result\": %s}", result);
 	}
 }
 
