@@ -29,7 +29,12 @@ public class Container extends HttpServlet {
 	}
 	
 	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+		String routerCheckResult = LoginChkInterceptor.routerChk(request);
+		if(routerCheckResult != null) {
+			response.sendRedirect(routerCheckResult);
+			return;
+		}
 		
 		String temp = mapper.nav(request); //보통 템플릿 파일명
 		
