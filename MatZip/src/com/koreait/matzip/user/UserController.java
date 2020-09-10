@@ -88,6 +88,12 @@ public class UserController {
 		
 		return String.format("ajax:{\"result\": %s}", result);
 	}
+	
+	public String logout(HttpServletRequest request) {
+		HttpSession hs = request.getSession();
+		hs.invalidate();
+		return "redirect:/user/login";
+	}
 }
 
 

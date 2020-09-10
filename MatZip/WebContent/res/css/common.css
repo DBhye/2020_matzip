@@ -11,6 +11,15 @@ html, body {
 	height: 100%;
 }
 
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.ml5 { margin-left: 5px; }
+.ml10 { margin-left: 10px; }
+.ml15 { margin-left: 15px; }
+
 #container {
 	display: flex;
 	flex-direction: column;
@@ -18,10 +27,25 @@ html, body {
 	height: 100%;
 }
 
-#container > header {
-	padding: 10px;
+#container > header {	
 	background-color: #a29bfe;
+	display: flex;
 	height: 70px;
+	padding: 10px;
+}
+
+#container > header > #headerLeft {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+}
+
+#container > header > #headerLeft > #headerLogout > a {
+	color: blue;
+}
+
+#container > header > #headerRight {
+	flex-grow: 1;
 }
 
 #container > section {
@@ -53,8 +77,19 @@ html, body {
 
 .msg { color: red; }
 
+ .containerPImg {
+	display: inline-block;	
+	width: 30px;
+	height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+}
 
-
+.pImg {
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
+}
 
 
 
