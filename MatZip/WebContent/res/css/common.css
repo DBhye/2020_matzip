@@ -45,7 +45,16 @@ a {
 }
 
 #container > header > #headerRight {
+	padding-right: 50px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 	flex-grow: 1;
+}
+
+#container > header > #headerRight > a {
+	font-weight: bold;
+	font-size: 1.4em;
 }
 
 #container > section {

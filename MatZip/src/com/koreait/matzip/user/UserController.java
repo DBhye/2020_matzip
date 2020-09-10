@@ -80,6 +80,9 @@ public class UserController {
 	
 	public String ajaxIdChk(HttpServletRequest request) {
 		String user_id = request.getParameter("user_id");
+		
+		System.out.println("user_id : " + user_id);
+		
 		UserVO param = new UserVO();
 		param.setUser_id(user_id);
 		param.setUser_pw("");
