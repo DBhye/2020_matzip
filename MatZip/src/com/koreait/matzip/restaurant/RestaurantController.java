@@ -12,4 +12,12 @@ public class RestaurantController {
 		request.setAttribute(Const.VIEW, "restaurant/restMap");
 		return ViewRef.TEMP_MENU_TEMP;
 	}
+	
+	public String restReg(HttpServletRequest request) {
+		request.setAttribute("categoryList", null);
+		
+		request.setAttribute(Const.TITLE, "가게 등록");
+		request.setAttribute(Const.VIEW, "restaurant/restReg");
+		return ViewRef.TEMP_MENU_TEMP;
+	}
 }
