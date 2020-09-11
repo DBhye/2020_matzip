@@ -11,15 +11,34 @@
 			level: 5 //지도의 레벨(확대, 축소 정도)
 		};
 	
-		const map = new kakao.maps.Map(mapContainer, options);
+		var map = new kakao.maps.Map(mapContainer, options);
 		
 		console.log(map.getCenter())
 		
 		function getRestaurantList() {
 			axios.get('/restaurant/ajaxGetList').then(function(res) {
+				console.log(res.data)
 				
+				res.data.forEach(function(item) {
+					console.log('item : ' + item)
+					
+					var na = {
+							'na': {
+								'Ga': item.lng,
+								'Ha': item.lat	
+							}
+					}
+					
+					console.log('na : ' + na.na)
+					var marker = new kakao.maps.Marker({
+					    position: na 
+					});
+					
+					marker.setMap(map)
+				})
 			})		
 		}
+		getRestaurantList()
 		
 		/*
 			na: {
