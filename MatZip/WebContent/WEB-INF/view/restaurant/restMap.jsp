@@ -5,33 +5,24 @@
 	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1ab3d71d45b40c5eaec83805c9a73569"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script>		
+	<script>
+			
 		const options = { //지도를 생성할 때 필요한 기본 옵션
-			center: new kakao.maps.LatLng(35.8641294, 128.5942331), //지도의 중심좌표.
+			center: new kakao.maps.LatLng(35.958437, 128.486084), //지도의 중심좌표.
 			level: 5 //지도의 레벨(확대, 축소 정도)
 		};
 	
 		var map = new kakao.maps.Map(mapContainer, options);
 		
-		console.log(map.getCenter())
-		
 		function getRestaurantList() {
 			axios.get('/restaurant/ajaxGetList').then(function(res) {
 				console.log(res.data)
 				
-				res.data.forEach(function(item) {
-					console.log('item : ' + item)
+				res.data.forEach(function(item) {					
+					var mPos = new kakao.maps.LatLng(item.lat, item.lng)
 					
-					var na = {
-							'na': {
-								'Ga': item.lng,
-								'Ha': item.lat	
-							}
-					}
-					
-					console.log('na : ' + na.na)
 					var marker = new kakao.maps.Marker({
-					    position: na 
+					    position: mPos 
 					});
 					
 					marker.setMap(map)
@@ -40,12 +31,25 @@
 		}
 		getRestaurantList()
 		
-		/*
-			na: {
-				Ga: 128.5942107684672
-				Ha: 35.86410635758569
-			}
 		
-		*/
+		// check for Geolocation support
+		if (navigator.geolocation) {
+		  console.log('Geolocation is supported!');
+		  
+		  var startPos;		  
+		  navigator.geolocation.getCurrentPosition(function(pos) {		
+			  	startPos = pos			  
+			    console.log('lat : ' + startPos.coords.latitude)
+			    console.log('lng : ' + startPos.coords.longitude)
+			    
+			    if(map) {
+				    var moveLatLon = new kakao.maps.LatLng(startPos.coords.latitude, startPos.coords.longitude)
+				    map.panTo(moveLatLon)			    	
+			    }
+		  });
+		  
+		} else {
+		  console.log('Geolocation is not supported for this Browser/OS.');
+		}
 	</script>
 </div>
