@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <style>
+	    .label {margin-bottom: 96px;}
+		.label * {display: inline-block;vertical-align: top;}
+		.label .left {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_l.png") no-repeat;display: inline-block;height: 24px;overflow: hidden;vertical-align: top;width: 7px;}
+		.label .center {background: url(https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_bg.png) repeat-x;display: inline-block;height: 24px;font-size: 12px;line-height: 24px;}
+		.label .right {background: url("https://t1.daumcdn.net/localimg/localimages/07/2011/map/storeview/tip_r.png") -1px 0  no-repeat;display: inline-block;height: 24px;overflow: hidden;width: 6px;}
+    </style>
+    
 <div id="sectionContainerCenter">
 	<div id="mapContainer" style="width:100%; height:100%;"></div>
 	
@@ -19,17 +27,25 @@
 				console.log(res.data)
 				
 				res.data.forEach(function(item) {					
-					var mPos = new kakao.maps.LatLng(item.lat, item.lng)
-					
-					var marker = new kakao.maps.Marker({
-					    position: mPos 
-					});
-					
-					marker.setMap(map)
+					createMarker(item)
 				})
 			})		
 		}
 		getRestaurantList()
+		
+		//마커생성
+		function createMarker(item) {
+			
+			var content = `<div class ="label"><span class="left"></span><span class="center">\${item.nm}</span><span class="right"></span></div>`
+			var mPos = new kakao.maps.LatLng(item.lat, item.lng)
+			
+			var marker = new kakao.maps.CustomOverlay({
+			    position: mPos,
+			    content: content
+			});
+			
+			marker.setMap(map)
+		}
 		
 		
 		// check for Geolocation support
