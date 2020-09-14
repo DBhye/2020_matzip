@@ -34,17 +34,42 @@
 		getRestaurantList()
 		
 		//마커생성
-		function createMarker(item) {
+		function createMarker(item) {			
+			var content = document.createElement('div')
+			content.className = 'label'
 			
-			var content = `<div class ="label"><span class="left"></span><span class="center">\${item.nm}</span><span class="right"></span></div>`
-			var mPos = new kakao.maps.LatLng(item.lat, item.lng)
+			var leftSpan = document.createElement('span')
+			leftSpan.className = 'left'
 			
+			var rightSpan = document.createElement('span')
+			rightSpan.className = 'right'
+			
+			var centerSpan = document.createElement('span')
+			centerSpan.className = 'center'
+			centerSpan.innerText = item.nm
+			
+			content.appendChild(leftSpan)
+			content.appendChild(centerSpan)
+			content.appendChild(rightSpan)			
+			//var content = `<div class ="label"><span class="left"></span><span class="center">\${item.nm}</span><span class="right"></span></div>`
+			var mPos = new kakao.maps.LatLng(item.lat, item.lng)			
 			var marker = new kakao.maps.CustomOverlay({
 			    position: mPos,
 			    content: content
-			});
+			});			
+			addEvent(content, 'click', function() {
+				console.log('마커 클릭: ' + item.i_rest)
+			})
 			
 			marker.setMap(map)
+		}
+		
+		function addEvent(target, type, callback) {
+			 if (target.addEventListener) {
+			    target.addEventListener(type, callback);
+		    } else {
+		        target.attachEvent('on' + type, callback);
+		    }
 		}
 		
 		
