@@ -58,4 +58,16 @@ public class RestaurantController {
 	public String ajaxGetList(HttpServletRequest request) {
 		return "ajax:" + service.getRestList();
 	}
+	
+	public String restDetail(HttpServletRequest request) {
+		int i_rest = CommonUtils.getIntParameter("i_rest", request);
+		
+		RestaurantVO param = new RestaurantVO();
+		param.setI_rest(i_rest);
+		
+		request.setAttribute("data", service.getRest(param));
+		request.setAttribute(Const.TITLE, "디테일");
+		request.setAttribute(Const.VIEW, "restaurant/restDetail");
+		return ViewRef.TEMP_MENU_TEMP;
+	}
 }
