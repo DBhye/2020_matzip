@@ -65,7 +65,7 @@ public class RestaurantDAO {
 				+ " AND B.i_m = 1 "
 				+ " LEFT JOIN ( "
 				+ "		SELECT i_rest, COUNT(i_rest) AS cnt "
-				+ "		FROM t_restaurant_recommend_menu "
+				+ "		FROM t_user_favorite "
 				+ "		WHERE i_rest = ? "
 				+ "		GROUP BY i_rest "
 				+ " ) C "
