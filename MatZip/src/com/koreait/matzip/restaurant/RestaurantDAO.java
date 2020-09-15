@@ -110,12 +110,37 @@ public class RestaurantDAO {
 					vo.setCd_category_nm(rs.getNString("cd_category_nm"));
 					vo.setCntFavorite(rs.getInt("cntFavorite"));
 				}
-			}
-			
+			}			
 		});
-		
-		
 		return vo;
+	}
+	
+	public List<RestaurantRecommendMenuVO> selRecommendMenuList(int i_rest) {
+		 List<RestaurantRecommendMenuVO> list = new ArrayList();
+		 String sql = " SELECT seq, menu_nm, menu_price, menu_pic"
+		 		+ " FROM t_restaurant_recommend_menu"
+		 		+ " WHERE i_rest = ?";
+		 
+		 JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, i_rest);
+			}
+
+			@Override
+			public void executeQuery(ResultSet rs) throws SQLException {
+				while(rs.next()) {
+					RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
+					vo.setSeq(rs.getInt("seq"));
+					vo.setMenu_nm(rs.getString("menu_nm"));
+					vo.setMenu_price(rs.getInt("menu_price"));
+					vo.setMenu_pic(rs.getString("menu_pic"));					
+					list.add(vo);
+				}
+			}			 
+		 });
+		 
+		 return list;
 	}
 }
 

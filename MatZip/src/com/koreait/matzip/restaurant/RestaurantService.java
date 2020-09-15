@@ -111,4 +111,8 @@ public class RestaurantService {
 		
 		return i_rest;
 	}
+	
+	public List<RestaurantRecommendMenuVO> getRecommendMenuList(int i_rest) {
+		return dao.selRecommendMenuList(i_rest);
+	}
 }

@@ -73,6 +73,7 @@ public class RestaurantController {
 		RestaurantVO param = new RestaurantVO();
 		param.setI_rest(i_rest);
 		
+		request.setAttribute("recommendMenuList", service.getRecommendMenuList(i_rest));
 		request.setAttribute("data", service.getRest(param));
 		request.setAttribute(Const.TITLE, "디테일");
 		request.setAttribute(Const.VIEW, "restaurant/restDetail");
