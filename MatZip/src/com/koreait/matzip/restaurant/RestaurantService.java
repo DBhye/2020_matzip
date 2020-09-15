@@ -117,4 +117,8 @@ public class RestaurantService {
 	public List<RestaurantRecommendMenuVO> getRecommendMenuList(int i_rest) {
 		return dao.selRecommendMenuList(i_rest);
 	}
+	
+	public int delRecMenu(RestaurantRecommendMenuVO param) {
+		return dao.delRecommendMenu(param);
+	}
 }

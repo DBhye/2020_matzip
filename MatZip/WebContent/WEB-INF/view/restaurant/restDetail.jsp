@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div>
 	<div class="recMenuContainer">
 		<c:forEach items="${recommendMenuList}" var="item">
-			<div class="recMenuItem">
+			<div class="recMenuItem" id="recMenuItem_${item.seq}">
 				<div class="pic">
 					<c:if test="${item.menu_pic != null and item.menu_pic != ''}">
 						<img src="/res/img/restaurant/${data.i_rest}/${item.menu_pic}">
@@ -12,8 +13,13 @@
 				</div>
 				<div class="info">
 					<div class="nm">${item.menu_nm}</div>
-					<div class="price">${item.menu_price}</div>
+					<div class="price"><fmt:formatNumber type="number" value="${item.menu_price}"/></div>
 				</div>
+				<c:if test="${loginUser.i_user == data.i_user}">
+					<div class="delIconContainer" onclick="delRecMenu(${data.i_rest}, ${item.seq})">
+						<span class="material-icons">clear</span>
+					</div>
+				</c:if>
 			</div>
 		</c:forEach>
 	</div>
@@ -63,7 +69,30 @@
 		</div>
 	</div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+	function delRecMenu(i_rest, seq) {
+		if(!confirm('삭제하시겠습니까?')) {
+			return
+		}
+		
+		console.log('i_rest : ' + i_rest)
+		console.log('seq : ' + seq)
+		
+		axios.get('/restaurant/ajaxDelRecMenu', {
+			params: {
+				i_rest, seq
+			}
+		}).then(function(res) {
+			console.log(res)
+			if(res.data == 1) {
+				//엘리먼트 삭제
+				var ele = document.querySelector('#recMenuItem_' + seq)
+				ele.remove()
+			}
+		})
+	}
+
 	var idx = 0;
 	function addRecMenu() {
 		var div = document.createElement('div')
