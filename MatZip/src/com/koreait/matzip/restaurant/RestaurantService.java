@@ -2,6 +2,7 @@ package com.koreait.matzip.restaurant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +13,8 @@ import com.google.gson.Gson;
 import com.koreait.matzip.CommonUtils;
 import com.koreait.matzip.FileUtils;
 import com.koreait.matzip.vo.RestaurantDomain;
+import com.koreait.matzip.vo.RestaurantRecommendMenuVO;
+import com.koreait.matzip.vo.RestaurantRecommendMenuVO;
 import com.koreait.matzip.vo.RestaurantVO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -49,6 +52,7 @@ public class RestaurantService {
 		int i_rest = 0;
 		String[] menu_nmArr = null;
 		String[] menu_priceArr = null;
+		List<RestaurantRecommendMenuVO> list = null;
 		try {
 			multi = new MultipartRequest(request, tempPath, maxFileSize, "UTF-8", new DefaultFileRenamePolicy());
 			
@@ -57,8 +61,16 @@ public class RestaurantService {
 			System.out.println("i_rest : " + i_rest);
 			menu_nmArr = multi.getParameterValues("menu_nm");
 			menu_priceArr = multi.getParameterValues("menu_price");
-			
-			
+						 
+			if(menu_nmArr != null && menu_priceArr != null) {
+				list = new ArrayList();
+				for(int i=0; i<menu_nmArr.length; i++) {
+					RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
+					vo.setMenu_nm(menu_nmArr[i]);
+					vo.setMenu_price(CommonUtils.parseStringToInt(menu_priceArr[i]));
+					list.add(vo);
+				}	
+			}
 			
 			String targetPath = request.getServletContext().getRealPath(savePath + "/" + i_rest);
 			FileUtils.makeFolder(targetPath);
@@ -80,15 +92,19 @@ public class RestaurantService {
 					File oldFile = new File(tempPath + "/" + fileNm);
 				    File newFile = new File(targetPath + "/" + saveFileNm);
 				    oldFile.renameTo(newFile);	
+				    
+				    int idx = CommonUtils.parseStringToInt(key.substring(key.lastIndexOf("_") + 1));				    
+				    RestaurantRecommendMenuVO vo = list.get(idx);
+				    vo.setMenu_pic(saveFileNm);
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		if(menu_nmArr != null && menu_priceArr != null) {
-			for(int i=0; i<menu_nmArr.length; i++) {
-				System.out.println(i + ":" + menu_nmArr[i] + ", " + menu_priceArr[i]);
+		if(list != null) {
+			for(RestaurantRecommendMenuVO vo : list) {
+				
 			}	
 		}
 		
