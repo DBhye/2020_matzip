@@ -43,8 +43,8 @@ public class RestaurantService {
 	
 	public int addRecMenus(HttpServletRequest request) {
 		
-		String savePath = "/res/img/restaurant";
-		String tempPath = request.getServletContext().getRealPath(savePath + "/temp");		
+		String savePath = request.getServletContext().getRealPath("/res/img/restaurant");
+		String tempPath = savePath + "/temp";//임시	
 		FileUtils.makeFolder(tempPath);
 		
 		int maxFileSize = 10_485_760; //1024 * 1024 * 10 (10mb) //최대 파일 사이즈 크기
@@ -61,36 +61,38 @@ public class RestaurantService {
 			System.out.println("i_rest : " + i_rest);
 			menu_nmArr = multi.getParameterValues("menu_nm");
 			menu_priceArr = multi.getParameterValues("menu_price");
-						 
-			if(menu_nmArr != null && menu_priceArr != null) {
-				list = new ArrayList();
-				for(int i=0; i<menu_nmArr.length; i++) {
-					RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
-					vo.setI_rest(i_rest);
-					vo.setMenu_nm(menu_nmArr[i]);
-					vo.setMenu_price(CommonUtils.parseStringToInt(menu_priceArr[i]));
-					list.add(vo);
-				}	
+			
+			if(menu_nmArr == null || menu_priceArr == null) {
+				return i_rest;
 			}
 			
-			String targetPath = request.getServletContext().getRealPath(savePath + "/" + i_rest);
+			list = new ArrayList();
+			for(int i=0; i<menu_nmArr.length; i++) {
+				RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
+				vo.setI_rest(i_rest);
+				vo.setMenu_nm(menu_nmArr[i]);
+				vo.setMenu_price(CommonUtils.parseStringToInt(menu_priceArr[i]));
+				list.add(vo);
+			}		
+			
+			String targetPath = savePath + "/" + i_rest;
 			FileUtils.makeFolder(targetPath);
 			
-			String fileNm = "";
-			String saveFileNm = "";
+			String originFileNm = "";
+			
 			Enumeration files = multi.getFileNames();
 			while(files.hasMoreElements()) {		
 				String key = (String)files.nextElement();
 				System.out.println("key : " + key);
-				fileNm = multi.getFilesystemName(key);
-				System.out.println("fileNm : " + fileNm);
+				originFileNm = multi.getFilesystemName(key);
+				System.out.println("fileNm : " + originFileNm);
 				
-				if(fileNm != null) {
-					String ext = FileUtils.getExt(fileNm);
-					saveFileNm = UUID.randomUUID() + ext;
+				if(originFileNm != null) { //파일 선택을 안 했으면 null이 넘어옴
+					String ext = FileUtils.getExt(originFileNm);
+					String saveFileNm = UUID.randomUUID() + ext;
 					
 					System.out.println("saveFileNm : " + saveFileNm);				
-					File oldFile = new File(tempPath + "/" + fileNm);
+					File oldFile = new File(tempPath + "/" + originFileNm);
 				    File newFile = new File(targetPath + "/" + saveFileNm);
 				    oldFile.renameTo(newFile);	
 				    

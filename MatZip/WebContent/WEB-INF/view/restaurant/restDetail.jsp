@@ -15,8 +15,20 @@
 			</form>
 		</div>
 		</c:if>
-		<div>
-			가게 사진들
+		<div class="recMenuContainer">
+			<c:forEach items="${recommendMenuList}" var="item">
+				<div class="recMenuItem">
+					<div class="pic">
+						<c:if test="${item.menu_pic != null and item.menu_pic != ''}">
+							<img src="/res/img/restaurant/${data.i_rest}/${item.menu_pic}">
+						</c:if>
+					</div>
+					<div class="info">
+						<div class="nm">${item.menu_nm}</div>
+						<div class="price">${item.menu_price}</div>
+					</div>
+				</div>
+			</c:forEach>
 		</div>
 		<div class="restaurant-detail">
 			<div id="detail-header">
