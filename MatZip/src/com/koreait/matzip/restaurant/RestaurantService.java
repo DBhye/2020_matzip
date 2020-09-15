@@ -66,6 +66,7 @@ public class RestaurantService {
 				list = new ArrayList();
 				for(int i=0; i<menu_nmArr.length; i++) {
 					RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
+					vo.setI_rest(i_rest);
 					vo.setMenu_nm(menu_nmArr[i]);
 					vo.setMenu_price(CommonUtils.parseStringToInt(menu_priceArr[i]));
 					list.add(vo);
@@ -104,10 +105,10 @@ public class RestaurantService {
 		
 		if(list != null) {
 			for(RestaurantRecommendMenuVO vo : list) {
-				
+				dao.insRecommendMenu(vo);
 			}	
 		}
 		
-		return 0;
+		return i_rest;
 	}
 }

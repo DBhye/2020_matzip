@@ -10,6 +10,7 @@ import com.koreait.matzip.db.JdbcSelectInterface;
 import com.koreait.matzip.db.JdbcTemplate;
 import com.koreait.matzip.db.JdbcUpdateInterface;
 import com.koreait.matzip.vo.RestaurantDomain;
+import com.koreait.matzip.vo.RestaurantRecommendMenuVO;
 import com.koreait.matzip.vo.RestaurantVO;
 
 public class RestaurantDAO {
@@ -31,6 +32,25 @@ public class RestaurantDAO {
 				ps.setInt(6,  param.getCd_category());
 			}
 			
+		});
+	}
+	
+	public int insRecommendMenu(RestaurantRecommendMenuVO param) {
+		String sql = " INSERT INTO t_restaurant_recommend_menu "
+				+ " (seq, i_rest, menu_nm, menu_price, menu_pic) "
+				+ " SELECT IFNULL(MAX(seq), 0) + 1, ?, ?, ?, ? "
+				+ " FROM t_restaurant_recommend_menu "
+				+ " WHERE i_rest = ? ";
+		
+		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_rest());
+				ps.setString(2, param.getMenu_nm());
+				ps.setInt(3, param.getMenu_price());
+				ps.setString(4, param.getMenu_pic());
+				ps.setInt(5, param.getI_rest());
+			}
 		});
 	}
 	
