@@ -54,6 +54,22 @@ public class RestaurantDAO {
 		});
 	}
 	
+	public int insMenu(RestaurantRecommendMenuVO param) {
+		String sql = " INSERT INTO t_restaurant_menu "
+				+ " (seq, i_rest, menu_pic) "
+				+ " SELECT IFNULL(MAX(seq), 0) + 1, ?, ? "
+				+ " FROM t_restaurant_menu "
+				+ " WHERE i_rest = ? ";
+		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_rest());
+				ps.setString(2, param.getMenu_pic());
+				ps.setInt(3, param.getI_rest());
+			}
+		});
+	}
+	
 	public List<RestaurantDomain> selRestList() {
 		List<RestaurantDomain> list = new ArrayList();
 		String sql = " SELECT i_rest, nm, lat, lng FROM t_restaurant ";

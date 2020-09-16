@@ -50,25 +50,34 @@ public class RestaurantService {
 	}
 	
 	public int addMenus(HttpServletRequest request) { //메뉴 
-		String savePath = request.getServletContext().getRealPath("/res/img/restaurant");
-		String tempPath = savePath + "/temp";//임시	
-		FileUtils.makeFolder(tempPath);
+		int i_rest = CommonUtils.getIntParameter("i_rest", request);
+		System.out.println("i_rest : " + i_rest);
+		
+		String targetPath = request.getServletContext().getRealPath("/res/img/restaurant/" + i_rest + "/menu");
+		FileUtils.makeFolder(targetPath);
+		
+		RestaurantRecommendMenuVO param = new RestaurantRecommendMenuVO();
+		param.setI_rest(i_rest);
 		
         try {
         	for (Part part : request.getParts()) {
-                String fileName = FileUtils.getFileName(part);
-                System.out.println("fileName : " + fileName);
-                if(fileName != null) {
-                	part.write(tempPath + "/" + fileName);	
+                String fileNm = part.getSubmittedFileName();
+                System.out.println("fileNm : " + fileNm);
+                
+                if(fileNm != null) {
+                	String ext = FileUtils.getExt(fileNm);
+                	String saveFileNm = UUID.randomUUID() + ext;                
+                	part.write(targetPath + "/" + saveFileNm); //파일 저장
+                	
+                	param.setMenu_pic(saveFileNm);
+                	dao.insMenu(param);
                 }
             }      
         } catch(Exception e) {
         	e.printStackTrace();
         }
-		
-		
-		
-		return 0;
+        
+		return i_rest;
 	}
 	
 	public int addRecMenus(HttpServletRequest request) { //추천메뉴
