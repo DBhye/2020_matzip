@@ -159,6 +159,31 @@ public class RestaurantDAO {
 		 return list;
 	}
 	
+	
+	public List<RestaurantRecommendMenuVO> selMenuList(final int i_rest) {
+		List<RestaurantRecommendMenuVO> list = new ArrayList();
+		
+		String sql = " SELECT seq, menu_pic FROM t_restaurant_menu "
+				+ " WHERE i_rest = ? ";
+		
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, i_rest);
+			}
+			@Override
+			public void executeQuery(ResultSet rs) throws SQLException {
+				while(rs.next()) {
+					RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
+					vo.setSeq(rs.getInt("seq"));
+					vo.setMenu_pic(rs.getString("menu_pic"));
+					list.add(vo);
+				}
+			}
+		});
+		return list;
+	}
+	
 	public int delRecommendMenu(RestaurantRecommendMenuVO param) {
 		String sql = " DELETE A "
 				+ " FROM t_restaurant_recommend_menu A "
