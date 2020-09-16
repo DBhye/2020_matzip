@@ -5,15 +5,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileItemFactory;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.google.gson.Gson;
 import com.koreait.matzip.CommonUtils;
 import com.koreait.matzip.FileUtils;
 import com.koreait.matzip.vo.RestaurantDomain;
-import com.koreait.matzip.vo.RestaurantRecommendMenuVO;
 import com.koreait.matzip.vo.RestaurantRecommendMenuVO;
 import com.koreait.matzip.vo.RestaurantVO;
 import com.oreilly.servlet.MultipartRequest;
@@ -41,7 +49,29 @@ public class RestaurantService {
 		return dao.selRest(param);
 	}
 	
-	public int addRecMenus(HttpServletRequest request) {
+	public int addMenus(HttpServletRequest request) { //메뉴 
+		String savePath = request.getServletContext().getRealPath("/res/img/restaurant");
+		String tempPath = savePath + "/temp";//임시	
+		FileUtils.makeFolder(tempPath);
+		
+        try {
+        	for (Part part : request.getParts()) {
+                String fileName = FileUtils.getFileName(part);
+                System.out.println("fileName : " + fileName);
+                if(fileName != null) {
+                	part.write(tempPath + "/" + fileName);	
+                }
+            }      
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+		
+		
+		
+		return 0;
+	}
+	
+	public int addRecMenus(HttpServletRequest request) { //추천메뉴
 		
 		String savePath = request.getServletContext().getRealPath("/res/img/restaurant");
 		String tempPath = savePath + "/temp";//임시	

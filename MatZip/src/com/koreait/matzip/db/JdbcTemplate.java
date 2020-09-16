@@ -36,6 +36,7 @@ public class JdbcTemplate {
 			
 			jdbc.update(ps); //바뀌는 부분
 			
+			System.out.println("ps : " + ps);
 			result = ps.executeUpdate();
 		} catch (Exception e) {		
 			e.printStackTrace();

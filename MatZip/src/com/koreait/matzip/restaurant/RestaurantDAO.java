@@ -149,7 +149,7 @@ public class RestaurantDAO {
 				+ " INNER JOIN t_restaurant B "
 				+ " ON A.i_rest = B.i_rest "
 				+ " AND B.i_user = ? "
-				+ " WHERE i_rest = ? AND seq = ? ";
+				+ " WHERE A.i_rest = ? AND A.seq = ? ";
 		
 		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
 
